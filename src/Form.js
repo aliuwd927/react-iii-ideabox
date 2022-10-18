@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Form.css";
 
 export default function Form(props) {
@@ -9,10 +9,13 @@ export default function Form(props) {
 
   const handleChange = (event) => {
     const value = event.target.value;
+    //What I've learned converting from class to functional component:
+
     //To set multiple properties inside state Object
     //we use ...state
     //we then use [event.target.name] => ['title','discription']
     //this is how we update multiple value
+    //Idea: Ping TuringSchool Examples for React III Ideabox to update Form.js
     setState({
       ...state,
       [event.target.name]: value,

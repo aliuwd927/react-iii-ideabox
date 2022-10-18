@@ -7,6 +7,7 @@ import { useReducer } from "react";
 
 const initalState = {
   theme: "light",
+  ideas: [],
 };
 
 const reducer = (state, action) => {
@@ -14,27 +15,31 @@ const reducer = (state, action) => {
     case "TOGGLE_THEME":
       const newTheme = state.theme === "light" ? "dark" : "light";
       return { ...state, theme: newTheme };
+    case "ADD_IDEA":
+      return { ...state, ideas: [...state.ideas, action.ideas] };
+    case "REMOVE_IDEA":
+      const filteredIdeas = state.ideas.filter((idea) => idea.id !== action.id);
+      return { ...state, ideas: filteredIdeas };
     default:
       return state;
   }
 };
 
 export default function App() {
-  const [ideas, setIdeas] = useState([]);
   const [state, dispatch] = useReducer(reducer, initalState);
 
   useEffect(() => {
-    document.title = `Ideabox (${ideas.length})`;
+    document.title = `Ideabox (${state.ideas.length})`;
   });
 
   const addIdea = (newIdea) => {
-    setIdeas([...ideas, newIdea]);
+    const action = { type: "ADD_IDEA", ideas: newIdea };
+    dispatch(action);
   };
 
   const deleteIdea = (id) => {
-    const filteredIdeas = ideas.filter((idea) => idea.id !== id);
-
-    setIdeas(filteredIdeas);
+    const action = { type: "REMOVE_IDEA", id };
+    dispatch(action);
   };
 
   const toggleTheme = () => {
@@ -43,12 +48,12 @@ export default function App() {
   };
 
   return (
-    <ThemeContext.Provider value={state.theme}>
+    <ThemeContext.Provider value={[state, dispatch]}>
       <div className="App">
         <h1>IdeaBox</h1>
         <button onClick={toggleTheme}>Toggle Theme</button>
         <Form addIdea={addIdea} />
-        <Ideas ideas={ideas} deleteIdea={deleteIdea} />
+        <Ideas ideas={state.ideas} deleteIdea={deleteIdea} />
       </div>
     </ThemeContext.Provider>
   );

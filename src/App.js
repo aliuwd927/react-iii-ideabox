@@ -3,10 +3,25 @@ import Ideas from "./Ideas";
 import Form from "./Form";
 import "./App.css";
 import ThemeContext from "./ThemeContext";
+import { useReducer } from "react";
+
+const initalState = {
+  theme: "light",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "TOGGLE_THEME":
+      const newTheme = state.theme === "light" ? "dark" : "light";
+      return { ...state, theme: newTheme };
+    default:
+      return state;
+  }
+};
 
 export default function App() {
   const [ideas, setIdeas] = useState([]);
-  const [theme, setTheme] = useState("light");
+  const [state, dispatch] = useReducer(reducer, initalState);
 
   useEffect(() => {
     document.title = `Ideabox (${ideas.length})`;
@@ -23,12 +38,12 @@ export default function App() {
   };
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
+    const action = { type: "TOGGLE_THEME" };
+    dispatch(action);
   };
 
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeContext.Provider value={state.theme}>
       <div className="App">
         <h1>IdeaBox</h1>
         <button onClick={toggleTheme}>Toggle Theme</button>

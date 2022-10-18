@@ -58,3 +58,16 @@ export default function App() {
     </ThemeContext.Provider>
   );
 }
+
+/*
+The code example above has passed the state and the dispatch function returned from the Reducer into the Context. The name of the Context has been changed since it’s no longer just for the Theme, but the mechanics of what it is doing are the same.
+
+Spend the rest of the class, and as homework, working to get the application back to the same functionality.
+
+You should not add any props to the <Form /> or components
+You will need to make use of useContext in the child components
+You will need to make use of dispatch in the child components
+Good luck!!
+
+
+*/

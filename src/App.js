@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Ideas from "./Ideas";
 import Form from "./Form";
 import "./App.css";
@@ -32,16 +32,6 @@ export default function App() {
     document.title = `Ideabox (${state.ideas.length})`;
   });
 
-  const addIdea = (newIdea) => {
-    const action = { type: "ADD_IDEA", ideas: newIdea };
-    dispatch(action);
-  };
-
-  const deleteIdea = (id) => {
-    const action = { type: "REMOVE_IDEA", id };
-    dispatch(action);
-  };
-
   const toggleTheme = () => {
     const action = { type: "TOGGLE_THEME" };
     dispatch(action);
@@ -52,8 +42,8 @@ export default function App() {
       <div className="App">
         <h1>IdeaBox</h1>
         <button onClick={toggleTheme}>Toggle Theme</button>
-        <Form addIdea={addIdea} />
-        <Ideas ideas={state.ideas} deleteIdea={deleteIdea} />
+        <Form />
+        <Ideas />
       </div>
     </ThemeContext.Provider>
   );

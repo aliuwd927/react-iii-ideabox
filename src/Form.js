@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Form.css";
+import ThemeContext from "./ThemeContext";
 
-export default function Form(props) {
-  const [state, setState] = useState({
+export default function Form() {
+  const [state, dispatch] = useContext(ThemeContext);
+  //console.log(state);
+  const [localTitle, setLocalTitle] = useState({
     title: "",
     description: "",
   });
@@ -16,8 +19,8 @@ export default function Form(props) {
     //we then use [event.target.name] => ['title','discription']
     //this is how we update multiple value
     //Idea: Ping TuringSchool Examples for React III Ideabox to update Form.js
-    setState({
-      ...state,
+    setLocalTitle({
+      ...localTitle,
       [event.target.name]: value,
     });
   };
@@ -26,15 +29,18 @@ export default function Form(props) {
     event.preventDefault();
     const newIdea = {
       id: Date.now(),
-      ...state,
+      ...localTitle,
     };
-    console.log(state);
-    props.addIdea(newIdea);
+    console.log(localTitle);
+    //props.addIdea(newIdea);
+    const action = { type: "ADD_IDEA", ideas: newIdea };
+    //console.log(dispatch(action));
+    dispatch(action);
     clearInputs();
   };
 
   const clearInputs = () => {
-    setState({ title: "", description: "" });
+    setLocalTitle({ title: "", description: "" });
   };
 
   return (
@@ -43,7 +49,7 @@ export default function Form(props) {
         type="text"
         placeholder="Title"
         name="title"
-        value={state.title}
+        value={localTitle.title}
         onChange={(event) => handleChange(event)}
       />
 
@@ -51,7 +57,7 @@ export default function Form(props) {
         type="text"
         placeholder="Description"
         name="description"
-        value={state.description}
+        value={localTitle.description}
         onChange={(event) => handleChange(event)}
       />
 
